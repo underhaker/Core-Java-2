@@ -1,38 +1,30 @@
-package demoracecondition;
+package myatomicinteger;
 
-import sun.awt.Mutex;
-
-public class RaceCondition {
-    private static int counter = 0;
-    static Mutex mutex = new Mutex();
+public class TestInteger {
+    private static MyAtomicInteger counter = new MyAtomicInteger();
 
     public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(new Runnable() {
 
             @Override
-            public synchronized void run() {
+            public void run() {
                 System.out.println("T1:" + Thread.currentThread().getName());
                 int i = 0;
                 while (i < 2_000_000) {
-                    mutex.lock();
-                    counter++;
+                    counter.increment();
                     i++;
-                    mutex.unlock();
                 }
-                notify();
             }
         });
         Thread t2 = new Thread(new Runnable() {
 
             @Override
-            public synchronized void run() {
+            public void run() {
                 System.out.println("T2:" + Thread.currentThread().getName());
                 int i = 0;
                 while (i < 2_000_000) {
-                    mutex.lock();
-                    counter++;
+                    counter.increment();
                     i++;
-                    mutex.unlock();
                 }
             }
         });
@@ -41,7 +33,7 @@ public class RaceCondition {
         t2.start();
         t1.join();
         t2.join();
-        System.out.println("counter:" + counter);
-        System.out.println("time:" + (System.currentTimeMillis() - startTime));
+        System.out.println("counter:" + counter.toString());
+        System.out.println("duartion:" + (System.currentTimeMillis() - startTime));
     }
 }
