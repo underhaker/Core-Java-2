@@ -6,16 +6,21 @@ import java.util.LinkedList;
 
 public class BlockedQueue<T> extends AbstractQueue<T> {
     private LinkedList<T> l = new LinkedList<T>();
-    private int maxSize = 5;
-
+    private int maxSize;
+    public BlockedQueue(){
+        this.maxSize=100;
+    }
+    public BlockedQueue(int mSize){
+        this.maxSize=mSize;
+    }
+    public void setMaxSize(int maxSize){
+        this.maxSize=maxSize;
+    }
     @Override
     public synchronized boolean offer(T e) {
         while (l.size() >= maxSize)
-            // System.out.println("waiting");
             try {
-                System.out.println("queue is full.. waiting for an element to be polled..");
                 wait();
-                // System.out.println("blabla");
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
@@ -33,9 +38,9 @@ public class BlockedQueue<T> extends AbstractQueue<T> {
 
         while (l.size() == 0)
             try {
-                System.out.println("trying to poll from an empty queue..");
+//                System.out.println("trying to poll from an empty queue..");
                 wait();
-                System.out.println("still waiting");
+//                System.out.println("still waiting");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

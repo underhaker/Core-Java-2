@@ -2,38 +2,46 @@ package myatomicinteger;
 
 public class TestInteger {
     private static MyAtomicInteger counter = new MyAtomicInteger();
-
-    public static void main(String[] args) throws InterruptedException {
+    private static final int COUNT = 2_000_000;
+    private static void incrementInteger(){
+        int i = 0;
+        while (i < COUNT) {
+            counter.increment();
+            i++;
+        }
+    }
+    
+    public static void Run(){
         Thread t1 = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                System.out.println("T1:" + Thread.currentThread().getName());
-                int i = 0;
-                while (i < 2_000_000) {
-                    counter.increment();
-                    i++;
-                }
+                incrementInteger();
             }
         });
+        
         Thread t2 = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                System.out.println("T2:" + Thread.currentThread().getName());
-                int i = 0;
-                while (i < 2_000_000) {
-                    counter.increment();
-                    i++;
-                }
+                incrementInteger();
             }
         });
+        
         long startTime = System.currentTimeMillis();
         t1.start();
         t2.start();
-        t1.join();
-        t2.join();
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
         System.out.println("counter:" + counter.toString());
-        System.out.println("duartion:" + (System.currentTimeMillis() - startTime));
+        System.out.println("duration:" + (System.currentTimeMillis() - startTime)/1000.0 + " seconds");
+    }
+    public static void main(String[] args)  {
+        Run();
     }
 }

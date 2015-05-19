@@ -3,7 +3,6 @@ package myatomicinteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 public class MyAtomicInteger {
     private volatile Integer currentValue;
     private final Lock myLock = new ReentrantLock();
@@ -31,7 +30,8 @@ public class MyAtomicInteger {
         myLock.unlock();
         return modifiedValue;
     }
-    public String toString(){
+
+    public String toString() {
         return this.currentValue.toString();
     }
 }

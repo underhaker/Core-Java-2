@@ -2,15 +2,18 @@ package minimalpointscalculations;
 
 public class Result {
     private Point point;
-    private double distance;
-    public Result(Point point,double distance){
-        this.point=point;
-        this.distance=distance;
+    private Double distance;
+
+    public Result(Point point, Double distance) {
+        this.point = point;
+        this.distance = distance;
     }
-    public Point getPoint(){
+
+    public Point getPoint() {
         return this.point;
     }
-    public double getDistance(){
+
+    public Double getDistance() {
         return this.distance;
     }
 }

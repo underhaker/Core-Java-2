@@ -1,10 +1,12 @@
 package demoracecondition;
 
-import sun.awt.Mutex;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 public class RaceCondition {
     private static int counter = 0;
-    static Mutex mutex = new Mutex();
+    static Lock  mutex = new ReentrantLock();
 
     public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(new Runnable() {
